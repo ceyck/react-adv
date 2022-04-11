@@ -13,42 +13,22 @@ export const useShoppingCart = () => {
 		count: number;
 		product: Product;
 	}) => {
-		// console.log({ count });
 		setShoppingCart((oldShoppingCart) => {
-			const productInCart: ProductInCart = oldShoppingCart[product.id] || {
-				...product,
-				count: 0,
-			};
-
-			if (Math.max(productInCart.count + count, 0) > 0) {
-				productInCart.count += count;
+			// console.log({ count });
+			if (count === 0) {
+				// delete oldShoppingCart[product.id]; como se me ocurrio a mi xd
+				const { [product.id]: deleted, ...rest } = oldShoppingCart;
 				return {
-					...oldShoppingCart,
-					[product.id]: productInCart,
+					...rest,
 				};
 			}
-
-			// Borrar el producto
-
-			const { [product.id]: toDelete, ...rest } = oldShoppingCart;
 			return {
-				...rest,
+				...oldShoppingCart,
+				[product.id]: {
+					...product,
+					count,
+				},
 			};
-			// }
-			// if (count === 0) {
-			// 	// delete oldShoppingCart[product.id]; como se me ocurrio a mi xd
-			// 	const { [product.id]: deleted, ...rest } = oldShoppingCart;
-			// 	return {
-			// 		...rest,
-			// 	};
-			// }
-			// return {
-			// 	...oldShoppingCart,
-			// 	[product.id]: {
-			// 		...product,
-			// 		count,
-			// 	},
-			// };
 		});
 	};
 
